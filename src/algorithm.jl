@@ -79,17 +79,17 @@ function dynamic_microcosm_hash(lines::Vector{Int64}, state::CounterState)
             end
 
 
-            # if (strval[1] != ' '
-            #     && !contains(strval, "  ")
-            #     && get(char_dict, 'Q', 0) < 1
-            #     && get(char_dict, 'J', 0) < 1
-            #     && get(char_dict, ' ', 0) > 2
-            #     && badsignals < 2
-            #     && goodsignals >= 3
-            #     && (goodsignals - badsignals > 3)
-            #    ) || contains(strval, "WASHINGTON") || contains(strval, "GASHTAN")
-            println(cat(lines, [i], dims=1), " ", strval, " ", entropy, " ", goodsignals, " ", badsignals)
-            # end
+            if (strval[1] != ' '
+                && !contains(strval, "  ")
+                && get(char_dict, 'Q', 0) < 1
+                && get(char_dict, 'J', 0) < 1
+                && get(char_dict, ' ', 0) > 2
+                && badsignals < 2
+                && goodsignals >= 3
+                && (goodsignals - badsignals > 3)
+               ) || contains(strval, "WASHINGTON") || contains(strval, "GASHTAN")
+                println(cat(lines, [i], dims=1), " ", strval, " ", entropy, " ", goodsignals, " ", badsignals)
+            end
         end
     end
 end
