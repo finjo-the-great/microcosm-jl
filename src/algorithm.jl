@@ -3,7 +3,7 @@ using StaticArrays
 
 struct CounterState
     n::Int32
-    counters::MVector{20,Int64}
+    counters::SVector{20,Int64}
 end
 
 const DENYLIST = Set{String}(["BF", "BK", "BW", "BX", "CV", "CW", "CX", "DK",
@@ -24,8 +24,9 @@ const COMMON_WORDS = Set{String}([
 function dynamic_microcosm_hash(lines::Vector{Int64}, state::CounterState)
     pagenum = length(lines) + 1
     page_lines = BOOK[pagenum]
-    for (i, line) = collect(enumerate(page_lines))
-        counters = copy(state.counters)
+    counters = allocate_counters()
+    @time for (i, line) = collect(enumerate(page_lines))
+        copy!(counters, state.counters)
         n = state.n
 
         for c in line
@@ -93,6 +94,10 @@ function dynamic_microcosm_hash(lines::Vector{Int64}, state::CounterState)
     end
 end
 
+function allocate_counters()
+    return zeros(MVector{20,Int64})
+end
+
 function microcosm_hash(lines::Vector{String})
     m_array::Vector{Int64} = zeros(20)
     n = 1
@@ -109,7 +114,6 @@ function microcosm_hash(lines::Vector{String})
             int_val = (x % 26) + 64
             return int_val == 64 ? ' ' : int_val
         end
-        println(String(Char.(mod.(m_array))))
+        return String(Char.(mod.(m_array)))
     end
-    println("====")
 end
