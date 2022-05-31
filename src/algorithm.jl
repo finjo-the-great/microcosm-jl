@@ -110,10 +110,11 @@ function microcosm_hash(lines::Vector{String})
                 n += 1
             end
         end
-        function mod(x)
-            int_val = (x % 26) + 64
-            return int_val == 64 ? ' ' : int_val
-        end
-        return String(Char.(mod.(m_array)))
     end
+    function mod(x)
+        int_val = (x % 26) + 64
+        return int_val == 64 ? ' ' : int_val
+    end
+    return String(Char.(mod.(m_array)))
+
 end
